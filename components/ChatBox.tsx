@@ -26,12 +26,16 @@ export default function ChatBox() {
   const [isLoading, setIsLoading] = useState(false);
   // Animated dots string
   const [dots, setDots] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement>(null);
+  // Reference to the scrollable chat container
+  const containerRef = useRef<HTMLDivElement>(null);
   // Track whether we're inside a <think>…</think> block
   const isThinking = useRef(false);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    const el = containerRef.current;
+    if (el) {
+      el.scrollTop = el.scrollHeight;
+    }
   };
   // Persist messages on change
   useEffect(() => {
@@ -142,7 +146,7 @@ export default function ChatBox() {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-4">
-      <div className="h-96 overflow-auto mb-4 p-2">
+      <div ref={containerRef} className="h-96 overflow-auto mb-4 p-2">
         {messages.map((msg, idx) => {
           const isLast = idx === messages.length - 1;
           const showLoading = isLoading && msg.role === 'assistant' && isLast && msg.content === '';
@@ -158,7 +162,6 @@ export default function ChatBox() {
             </div>
           );
         })}
-        <div ref={messagesEndRef} />
       </div>
       <div className="flex items-center">
         <input
