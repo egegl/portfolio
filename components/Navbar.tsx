@@ -42,7 +42,20 @@ const Navbar = () => {
         localStorage.setItem('theme', next);
         applyTheme(next);
     };
-    
+
+    // Randomize foreground & background to two colorful hues
+    const randomizeColors = () => {
+        const root = document.documentElement;
+        const randColor = () => {
+            const h = Math.floor(Math.random() * 360);
+            const s = Math.floor(Math.random() * 50) + 50;
+            const l = Math.floor(Math.random() * 40) + 40;
+            return `hsl(${h},${s}%,${l}%)`;
+        };
+        root.style.setProperty('--background', randColor());
+        root.style.setProperty('--foreground', randColor());
+    };
+
     return (
         <nav className="navbar">
             <div className="logo">
@@ -63,6 +76,15 @@ const Navbar = () => {
             {/* Theme toggle */}
             <button className="theme-toggle" onClick={toggleTheme} aria-label="Toggle theme">
                 {theme === 'light' ? '🌚' : '🌞'}
+            </button>
+
+            <button className="randomize-toggle" disabled={true}>
+                |
+            </button>
+
+            {/* Random color brush */}
+            <button className="randomize-toggle" onClick={randomizeColors} aria-label="Random colors">
+                🎨
             </button>
         </nav>
     );

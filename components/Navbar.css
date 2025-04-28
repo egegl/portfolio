@@ -35,6 +35,7 @@
     color: rebeccapurple;
 }
 /* Theme toggle button styling */
+/* Theme toggle button styling */
 .theme-toggle {
     background: none;
     border: none;
@@ -43,4 +44,14 @@
     color: var(--foreground);
     padding: 0;
     margin-left: 1rem;
+}
+/* Randomize toggle (paint brush) styling */
+.randomize-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    color: var(--foreground);
+    padding: 0;
+    margin-left: 0.5rem;
 }
