@@ -8,16 +8,19 @@ type Message = { role: 'user' | 'assistant'; content: string };
 type APIMessage = { role: 'system' | 'user' | 'assistant'; content: string };
 
 export default function ChatBox() {
-  // Load persisted messages from localStorage, if any
-  const [messages, setMessages] = useState<Message[]>(() => {
+  // Conversation messages
+  const [messages, setMessages] = useState<Message[]>([]);
+  // On mount, load persisted messages (client-side only)
+  useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
         const saved = localStorage.getItem('chat_messages');
-        if (saved) return JSON.parse(saved);
-      } catch {};
+        if (saved) setMessages(JSON.parse(saved));
+      } catch {
+        // ignore parse errors
+      }
     }
-    return [];
-  });
+  }, []);
   const [input, setInput] = useState('');
   // Loading state for thinking animation
   const [isLoading, setIsLoading] = useState(false);
@@ -145,8 +148,12 @@ export default function ChatBox() {
           const showLoading = isLoading && msg.role === 'assistant' && isLast && msg.content === '';
           return (
             <div key={idx} className={msg.role === 'user' ? 'mb-2 text-right' : 'mb-2 text-left'}>
-              <div className="inline-block border border-gray-400 p-2 whitespace-pre-wrap">
-                {showLoading ? dots : msg.content}
+              <div className="inline-block border border-gray-400 p-2">
+                {showLoading ? (
+                  <span className="inline-block min-w-[3ch] text-center">{dots}</span>
+                ) : (
+                  <span className="whitespace-pre-wrap">{msg.content}</span>
+                )}
               </div>
             </div>
           );
