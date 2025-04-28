@@ -10,7 +10,7 @@
   --color-foreground: var(--foreground);
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
@@ -25,7 +25,7 @@ body {
 }
 
 .section {
-  border: 1px solid #000;
+  border: 1px solid var(--foreground);
   padding: 0.5rem 2rem 1.5rem;
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;

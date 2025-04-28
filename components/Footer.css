@@ -2,10 +2,10 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #fff;
+    background-color: var(--background);
     padding: 1rem 2rem;
-    color: black;
-    border-top: 1px solid #000;
+    color: var(--foreground);
+    border-top: 1px solid var(--foreground);
     width: 100%;
     bottom: 0;
 }
