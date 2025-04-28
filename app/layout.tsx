@@ -8,7 +8,7 @@ const ebGaramond = EB_Garamond({
 });
 
 export const metadata: Metadata = {
-    title: "Ege's Site :)",
+    title: "Ege Gursel",
     description: "Personal website of Ege Gürsel",
 };
 
