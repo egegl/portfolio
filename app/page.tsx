@@ -13,7 +13,7 @@ export default async function Home() {
           <p>I'm a Computer Science and Math student at Emory University with a drive to build
             tech that creates real impact. I’ve led UN-backed robotics outreach across Turkey, mentored
             international FRC teams, and organized STEM education programs that reached thousands of underserved
-            students. At Emory, I combine this passion for community with my technical skills—whether that’s
+            students. At Emory, I combine this passion for community with my technical skills, whether that’s
             through student organizations or building tools that connect people and ideas.</p>
           <br/>
           <p>I love problem-solving. I’ve worked on AI models for protein interface
