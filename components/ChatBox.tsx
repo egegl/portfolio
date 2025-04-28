@@ -169,11 +169,12 @@ export default function ChatBox() {
           className="flex-grow border px-2 py-1 mr-2"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') handleSend(); }}
+          onKeyDown={(e) => { if (e.key === 'Enter' && !isLoading) handleSend(); }}
           placeholder="Type your message..."
+          disabled={isLoading}
         />
         <div className="flex space-x-2">
-          <button onClick={handleSend} className="px-2.5 py-1 border">
+          <button onClick={handleSend} className="px-2.5 py-1 border" disabled={isLoading}>
             Send
           </button>
           <button onClick={handleClear} className="px-2.5 py-1 border">
