@@ -10,21 +10,13 @@ export default async function Home() {
           <p className="text-lg">
             <b>About Me</b>
           </p>
-          <p>I'm a Computer Science and Math student at Emory University with a drive to build
-            tech that creates real impact. I’ve led UN-backed robotics outreach across Turkey, mentored
-            international FRC teams, and organized STEM education programs that reached thousands of underserved
-            students. At Emory, I combine this passion for community with my technical skills, whether that’s
-            through student organizations or building tools that connect people and ideas.</p>
+          <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus sagittis, leo quis aliquam bibendum, erat mi placerat dui, sed condimentum sapien dui ut arcu. Donec in nulla in elit eleifend elementum et a tortor. Curabitur lectus augue, cursus sed semper et, egestas vitae orci. Fusce orci metus, accumsan at dui id, finibus maximus arcu. Ut in nunc in leo semper lacinia quis vel nulla. Donec eu leo volutpat, interdum erat vitae, facilisis elit. Mauris ut nulla eget nibh commodo efficitur. Aliquam blandit enim nisl, eget fringilla nisi vehicula quis. Nunc pharetra ac ipsum ultrices finibus.
+          </p>
           <br/>
-          <p>I love problem-solving. I’ve worked on AI models for protein interface
-            prediction, fine-tuned large language models for summarization and code generation, and built
-            end-to-end systems using frameworks like PyTorch, TensorFlow, and Hugging Face. I also love creative
-            expression through photography and game development!</p>
-          <br/>
-          <p>Right now, I’m exploring opportunities in tech consulting, software engineering, data science,
-            and applied AI. Looking to join teams that value purpose and people. </p>
-          <br/>
-          <p>Let’s build something cool together!</p>
+          <p>
+              Duis vitae volutpat mi, ut blandit augue. Ut rutrum purus et mi ornare venenatis. Etiam lobortis neque ac neque mattis, sed suscipit risus accumsan. Nullam a consectetur sapien, gravida mattis libero. Suspendisse quis fermentum ipsum. Aenean malesuada pharetra volutpat. Curabitur tincidunt in odio in dignissim. Praesent viverra ante eget purus ornare imperdiet. Etiam et vehicula tortor.
+          </p>
           <br/>
           <a href="/contact">
             ◡̈ <u>Contact Me</u> ◡̈

@@ -7,9 +7,6 @@ type Message = { role: 'user' | 'assistant'; content: string };
 // APIMessage includes system role for initial instructions
 type APIMessage = { role: 'system' | 'user' | 'assistant'; content: string };
 
-// This must match whatever is set on env: { CHAT_SYSTEM_PROMPT: ... } in next.config.ts
-const SYSTEM_PROMPT = process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT || process.env.CHAT_SYSTEM_PROMPT || 'You are EgeBot.';
-
 export default function ChatBox() {
   // Conversation messages
   const [messages, setMessages] = useState<Message[]>([]);
@@ -91,13 +88,8 @@ export default function ChatBox() {
     let assistantMessage: Message = { role: 'assistant', content: '' };
     setMessages([...newMessages, assistantMessage]);
 
-    // Prepare API messages with system instructions
-    const systemPrompt: string = typeof window !== 'undefined' && process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT ? process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT : SYSTEM_PROMPT;
-    const systemMessage: APIMessage = {
-      role: 'system',
-      content: systemPrompt
-    };
-    const apiMessages: APIMessage[] = [systemMessage, ...newMessages];
+    // systemPrompt is passed from .env
+    const apiMessages: APIMessage[] = [...newMessages];
 
     // Reset thinking filter and start loading animation
     isThinking.current = false;
@@ -154,7 +146,7 @@ export default function ChatBox() {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-4">
-      <div ref={containerRef} className="h-96 overflow-auto mb-4 p-2">
+      <div ref={containerRef} className="h-120 overflow-auto mb-4 p-2">
         {messages.map((msg, idx) => {
           const isLast = idx === messages.length - 1;
           const showLoading = isLoading && msg.role === 'assistant' && isLast && msg.content === '';
