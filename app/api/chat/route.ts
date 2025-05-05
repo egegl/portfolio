@@ -1,11 +1,15 @@
 import Together from 'together-ai';
 
-const SYSTEM_PROMPT = process.env.CHAT_SYSTEM_PROMPT || 'You are EgeBot.';
+const SYSTEM_PROMPT =
+  process.env.CHAT_SYSTEM_PROMPT ||
+  process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT ||
+  'You are EgeBot.';
 
 export async function POST(request: Request) {
   const { messages } = await request.json();
   const apiKey = process.env.TOGETHER_API_KEY;
   const together = new Together({ apiKey });
+
   // Add system prompt at the start if not already present
   let startMessages = messages;
   if (!messages.some((m: any) => m.role === 'system')) {
