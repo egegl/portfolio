@@ -58,7 +58,7 @@ const Navbar = () => {
 
     return (
         <nav className="navbar">
-            <div className="logo">
+            <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                 <TypeAnimation
                     sequence={[
                         "Hi, I'm Ege!"

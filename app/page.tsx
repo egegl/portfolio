@@ -62,19 +62,6 @@ export default async function Home() {
           </a>
         </div>
         <div className="section">
-          <p className="text-lg">
-            <b>Now Playing</b>
-          </p>
-          <br/>
-          <iframe
-              src="https://open.spotify.com/embed/track/5D7DtfpW0ULiafCYRrjnxk?utm_source=generator"
-              width="300"
-              height="80"
-              allow="encrypted-media"
-              className="rounded shadow-lg transition-all hover:scale-102 duration-300"
-          ></iframe>
-        </div>
-        <div className="section">
             <p className="text-lg">
                 <b>Chat with EgeBot</b>
             </p>
