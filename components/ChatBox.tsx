@@ -2,72 +2,56 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
 
-// Define the message structure for rendering
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
-// API message can include system prompt
-interface APIMessage {
-  role: 'system' | 'user' | 'assistant';
-  content: string;
-}
+// Message type for conversation state (displayed messages)
+type Message = { role: 'user' | 'assistant'; content: string };
+// APIMessage includes system role for initial instructions
+type APIMessage = { role: 'system' | 'user' | 'assistant'; content: string };
 
-/**
- * ChatBox displays a chat UI powered by the /api/chat endpoint.
- * It uses localStorage to persist the user's conversation, and displays a simple typing indicator.
- * Safe for public deployment: No confidential logic or keys are present.
- */
+// This must match whatever is set on env: { CHAT_SYSTEM_PROMPT: ... } in next.config.ts
+const SYSTEM_PROMPT = process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT || process.env.CHAT_SYSTEM_PROMPT || 'You are EgeBot.';
+
 export default function ChatBox() {
-  // Maintains the local chat history
+  // Conversation messages
   const [messages, setMessages] = useState<Message[]>([]);
-
-  // On mount, load any locally persisted chat history from localStorage (browser only)
+  // On mount, load persisted messages (client-side only)
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
         const saved = localStorage.getItem('chat_messages');
         if (saved) setMessages(JSON.parse(saved));
       } catch {
-        // Ignore errors silently
+        // ignore parse errors
       }
     }
   }, []);
-
-  // Message input field
   const [input, setInput] = useState('');
-  // Whether the assistant is responding (shows loading animation)
+  // Loading state for thinking animation
   const [isLoading, setIsLoading] = useState(false);
-  // Simple animated dots for thinking
+  // Animated dots string
   const [dots, setDots] = useState('');
-  // Reference to the chat container to auto-scroll to bottom
+  // Reference to the scrollable chat container
   const containerRef = useRef<HTMLDivElement>(null);
-  // Used to skip over <think>...</think> regions in streaming output
+  // Track whether we're inside a <think>…</think> block
   const isThinking = useRef(false);
 
-  // Scroll to bottom when called
   const scrollToBottom = () => {
     const el = containerRef.current;
     if (el) {
       el.scrollTop = el.scrollHeight;
     }
   };
-
-  // Persist chat messages in localStorage whenever they change (browser only)
+  // Persist messages on change
   useEffect(() => {
     if (typeof window !== 'undefined') {
       localStorage.setItem('chat_messages', JSON.stringify(messages));
     }
   }, [messages]);
-
-  // Scroll to bottom on message updates
+  // Auto-scroll when messages update
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
 
-  /**
-   * Removes <think>...</think> blocks from streamed output.
-   */
+  // Remove <think> blocks and their content from the stream
   function filterThink(raw: string): string {
     let out = '';
     let rem = raw;
@@ -75,10 +59,10 @@ export default function ChatBox() {
       if (isThinking.current) {
         const closeIdx = rem.indexOf('</think>');
         if (closeIdx === -1) {
-          // Still inside <think>, skip rest
+          // still thinking, skip all
           rem = '';
         } else {
-          // Found closing tag
+          // exit thinking mode
           rem = rem.slice(closeIdx + '</think>'.length);
           isThinking.current = false;
         }
@@ -97,9 +81,6 @@ export default function ChatBox() {
     return out;
   }
 
-  /**
-   * Submit the user's message and stream the assistant's response.
-   */
   const handleSend = async () => {
     if (!input.trim()) return;
     const userMessage: Message = { role: 'user', content: input };
@@ -110,24 +91,22 @@ export default function ChatBox() {
     let assistantMessage: Message = { role: 'assistant', content: '' };
     setMessages([...newMessages, assistantMessage]);
 
-    // Prepare API messages. The system prompt (if any) is made public via next.config.ts / process.env.CHAT_SYSTEM_PROMPT
-    const systemPrompt: string = process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT || process.env.CHAT_SYSTEM_PROMPT || 'You are EgeBot.';
-    // Log statement removed for privacy in public repo.
+    // Prepare API messages with system instructions
+    const systemPrompt: string = typeof window !== 'undefined' && process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT ? process.env.NEXT_PUBLIC_CHAT_SYSTEM_PROMPT : SYSTEM_PROMPT;
     const systemMessage: APIMessage = {
       role: 'system',
       content: systemPrompt
     };
     const apiMessages: APIMessage[] = [systemMessage, ...newMessages];
 
-    // Reset think-block filtering and show loading animation
+    // Reset thinking filter and start loading animation
     isThinking.current = false;
     setIsLoading(true);
 
-    // Start animated dots for loading UI
+    // start dots animation
     const interval = window.setInterval(() => {
       setDots(prev => (prev.length >= 3 ? '.' : prev + '.'));
     }, 500);
-
     await fetchEventSource('/api/chat', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -135,9 +114,11 @@ export default function ChatBox() {
       onmessage(event) {
         try {
           const parsed = JSON.parse(event.data);
-          // Remove <think> blocks and strip leading/trailing newlines, and remove markdown bold styling
+          // Remove think blocks, then strip leading newlines to avoid extra empty lines
           let chunk = filterThink(parsed.content);
+          // strip leading newlines
           chunk = chunk.replace(/^\n+/, '');
+          // remove any markdown bold markers
           chunk = chunk.replace(/\*\*(.*?)\*\*/g, '$1');
           if (chunk) {
             assistantMessage.content += chunk;
@@ -145,28 +126,26 @@ export default function ChatBox() {
             scrollToBottom();
           }
         } catch (e) {
-          // Non-JSON SSE messages are ignored
+          console.warn('Non-JSON SSE message', event.data);
         }
       },
       onerror(err) {
-        // Could enhance with error state display
         console.error('Chat error:', err);
       }
     });
 
-    // Cleanup loading animation
+    // stop loading animation
     window.clearInterval(interval);
     setIsLoading(false);
     setDots('');
   };
-
-  /**
-   * Clears the conversation and persisted chat history.
-   */
+  
+  // Clear the chat history and reset input
   const handleClear = () => {
     setMessages([]);
     setInput('');
     isThinking.current = false;
+    // Clear persisted messages
     if (typeof window !== 'undefined') {
       localStorage.removeItem('chat_messages');
     }
@@ -175,7 +154,6 @@ export default function ChatBox() {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-4">
-      {/* Chat history */}
       <div ref={containerRef} className="h-96 overflow-auto mb-4 p-2">
         {messages.map((msg, idx) => {
           const isLast = idx === messages.length - 1;
@@ -193,7 +171,6 @@ export default function ChatBox() {
           );
         })}
       </div>
-      {/* Input and actions */}
       <div className="flex items-center">
         <input
           type="text"
