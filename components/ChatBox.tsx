@@ -146,7 +146,7 @@ export default function ChatBox() {
 
   return (
     <div className="w-full max-w-2xl mx-auto p-4">
-      <div ref={containerRef} className="h-120 overflow-auto mb-4 p-2">
+      <div ref={containerRef} className="h-12c0 overflow-auto mb-4 p-2">
         {messages.map((msg, idx) => {
           const isLast = idx === messages.length - 1;
           const showLoading = isLoading && msg.role === 'assistant' && isLast && msg.content === '';
