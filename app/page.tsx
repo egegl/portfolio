@@ -4,7 +4,7 @@ import ChatBox from '../components/ChatBox';
 
 export default async function Home() {
   return (
-      <main className="flex min-h-screen flex-col items-center justify-between p-6">
+      <main className="w-full max-w-4xl mx-auto flex min-h-screen flex-col items-center justify-between px-4 py-6 sm:px-6 lg:px-8">
         <Navbar/>
         <div className="section">
           <p className="text-lg">

@@ -8,6 +8,8 @@ import {TypeAnimation} from "react-type-animation";
 
 const Navbar = () => {
     const [theme, setTheme] = useState<'light' | 'dark'>('light');
+    // Mobile menu open state
+    const [isOpen, setIsOpen] = useState(false);
 
     // Apply CSS variable values based on current theme
     const applyTheme = (newTheme: 'light' | 'dark') => {
@@ -56,6 +58,7 @@ const Navbar = () => {
         root.style.setProperty('--foreground', randColor());
     };
 
+    const toggleMenu = () => setIsOpen(!isOpen);
     return (
         <nav className="navbar">
             <div className="logo" style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
@@ -67,7 +70,11 @@ const Navbar = () => {
                     repeat={0}
                 />
             </div>
-            <ul className="nav-links">
+            {/* Mobile menu toggle */}
+            <button className="hamburger" onClick={toggleMenu} aria-label="Toggle menu">
+                {isOpen ? '✕' : '☰'}
+            </button>
+            <ul className={`nav-links${isOpen ? ' open' : ''}`}>
                 <li><Link href="/">Home</Link></li>
                 <li><Link href="/about">About</Link></li>
                 <li><Link href="/projects">Projects</Link></li>
