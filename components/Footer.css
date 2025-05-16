@@ -1,7 +1,8 @@
 .footer {
-    width: 96vw;
+    width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 1rem 0;
+    padding: 1rem 0.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -13,11 +14,12 @@
 
 .footer-content {
     width: 100%;
-    max-width: 95%;
+    max-width: 100%;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 1rem;
 }
 
 .footer-location {

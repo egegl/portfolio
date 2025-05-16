@@ -119,26 +119,30 @@ export default function PhotoOfTheDay() {
 
   return (
     <div className="photo-container" ref={containerRef}>
-      <div 
-        className="photo-wrapper" 
-        style={{ 
-          height: containerHeight ? `${containerHeight}px` : 'auto',
-          minHeight: '200px'
-        }}
-      >
-        {loading ? (
-          <div className="photo-loading">Loading photo...</div>
-        ) : photoUrl ? (
-          <img 
-            ref={imageRef}
-            src={photoUrl} 
-            alt="Photo of the day" 
-            className="photo-image"
-            style={{ opacity: loading ? 0 : 1 }}
-          />
-        ) : (
-          <div className="photo-error">No photo available</div>
-        )}
+      <div className="photo-content">
+        <div 
+          className="photo-wrapper" 
+          style={{ 
+            height: containerHeight ? `${containerHeight}px` : 'auto',
+            minHeight: '200px'
+          }}
+        >
+          {loading ? (
+            <div className="photo-loading">Loading photo...</div>
+          ) : photoUrl ? (
+            <div className="photo-container-inner">
+              <img 
+                ref={imageRef}
+                src={photoUrl} 
+                alt="Photo of the day" 
+                className="photo-image"
+                style={{ opacity: loading ? 0 : 1 }}
+              />
+            </div>
+          ) : (
+            <div className="photo-error">No photo available</div>
+          )}
+        </div>
       </div>
       {photoUrl && (
         <button 

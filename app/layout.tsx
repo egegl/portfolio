@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { EB_Garamond } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 
-const ebGaramond = EB_Garamond({
+const inter = Inter({
     subsets: ["latin"],
-    variable: "--font-eb-garamond",
+    display: "swap",
+    variable: "--font-inter",
 });
 
 export const metadata: Metadata = {
@@ -23,7 +24,7 @@ export default function RootLayout({
                 {/* Ensure proper mobile scaling */}
                 <meta name="viewport" content="width=device-width, initial-scale=1" />
             </head>
-            <body className={`${ebGaramond.variable}`}>
+            <body className={`${inter.variable}`}>
                 {children}
             </body>
         </html>

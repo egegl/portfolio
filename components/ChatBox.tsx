@@ -140,6 +140,7 @@ export default function ChatBox() {
   const handleClear = () => {
     setMessages([]);
     setInput('');
+    setIsLoading(false); // Ensure loading state is reset
     isThinking.current = false;
     // Clear persisted messages
     if (typeof window !== 'undefined') {
