@@ -37,6 +37,11 @@ export default function Navbar() {
                  0 8px 16px rgba(255, 255, 255, 0.15),
                  0 16px 32px rgba(255, 255, 255, 0.15)`
             );
+            // Set small shadows for interactive elements
+            document.documentElement.style.setProperty('--shadow-small', stored === 'light' ? 
+                `0 1px 2px rgba(0, 0, 0, 0.3)` :
+                `0 1px 2px rgba(255, 255, 255, 0.3)`
+            );
         } else {
             const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const initial = systemDark ? 'dark' : 'light';
@@ -54,6 +59,11 @@ export default function Navbar() {
                  0 4px 8px rgba(255, 255, 255, 0.15),
                  0 8px 16px rgba(255, 255, 255, 0.15),
                  0 16px 32px rgba(255, 255, 255, 0.15)`
+            );
+            // Set small shadows for interactive elements
+            document.documentElement.style.setProperty('--shadow-small', initial === 'light' ? 
+                `0 1px 2px rgba(0, 0, 0, 0.3)` :
+                `0 1px 2px rgba(255, 255, 255, 0.3)`
             );
         }
     }, []);
@@ -78,6 +88,11 @@ export default function Navbar() {
              0 4px 8px rgba(255, 255, 255, 0.15),
              0 8px 16px rgba(255, 255, 255, 0.15),
              0 16px 32px rgba(255, 255, 255, 0.15)`
+        );
+        // Set small shadows for interactive elements
+        document.documentElement.style.setProperty('--shadow-small', next === 'light' ? 
+            `0 1px 2px rgba(0, 0, 0, 0.3)` :
+            `0 1px 2px rgba(255, 255, 255, 0.3)`
         );
     };
 
@@ -110,6 +125,8 @@ export default function Navbar() {
             0 8px 16px rgba(0, 0, 0, 0.1),
             0 16px 32px rgba(0, 0, 0, 0.1)
         `);
+        // Set small shadows for interactive elements
+        root.style.setProperty('--shadow-small', `0 1px 2px rgba(0, 0, 0, 0.3)`);
     };
 
     const toggleMenu = () => setIsOpen(!isOpen);
