@@ -27,29 +27,37 @@ export async function GET() {
 
     console.log('Blog info response:', blogData);
 
-    // Fetch all posts
-    const postsUrl = `https://api.tumblr.com/v2/blog/${BLOG_URL}/posts?api_key=${TUMBLR_API_KEY}&limit=50`;
-    console.log('Fetching posts from:', postsUrl);
-    
-    const postsResponse = await fetch(postsUrl);
-    const postsData = await postsResponse.json();
-    
-    if (!postsResponse.ok) {
-      console.error('Posts error:', postsData);
-      throw new Error(`Failed to fetch posts: ${postsData.meta?.msg || 'Unknown error'}`);
+    // Fetch all posts using pagination
+    let allPosts: any[] = [];
+    let offset = 0;
+    const limit = 50; // Maximum posts per request
+    let hasMorePosts = true;
+
+    while (hasMorePosts) {
+      const postsUrl = `https://api.tumblr.com/v2/blog/${BLOG_URL}/posts?api_key=${TUMBLR_API_KEY}&limit=${limit}&offset=${offset}`;
+      console.log('Fetching posts from:', postsUrl);
+      
+      const postsResponse = await fetch(postsUrl);
+      const postsData = await postsResponse.json();
+      
+      if (!postsResponse.ok) {
+        console.error('Posts error:', postsData);
+        throw new Error(`Failed to fetch posts: ${postsData.meta?.msg || 'Unknown error'}`);
+      }
+
+      const posts = postsData.response?.posts || [];
+      if (posts.length === 0) {
+        hasMorePosts = false;
+      } else {
+        allPosts = [...allPosts, ...posts];
+        offset += limit;
+      }
     }
 
-    // Check if we have posts
-    if (!postsData.response?.posts || postsData.response.posts.length === 0) {
-      console.log('No posts found in response');
-      return NextResponse.json({ 
-        error: 'No posts found',
-        details: 'The Tumblr API returned no posts'
-      }, { status: 404 });
-    }
+    console.log('Total posts fetched:', allPosts.length);
 
     // Get all posts that have images
-    const postsWithImages = postsData.response.posts.filter((post: any) => {
+    const postsWithImages = allPosts.filter((post: any) => {
       // Check if the post has an image in its body
       if (post.body && post.body.includes('<img')) {
         // Extract the first image URL from the post
@@ -62,7 +70,7 @@ export async function GET() {
       return false;
     });
 
-    console.log('Total posts:', postsData.response.posts.length);
+    console.log('Total posts:', allPosts.length);
     console.log('Posts with images:', postsWithImages.length);
 
     if (postsWithImages.length === 0) {
@@ -90,7 +98,10 @@ export async function GET() {
       response: {
         posts: transformedPosts
       },
-      meta: postsData.meta
+      meta: {
+        status: 200,
+        msg: 'OK'
+      }
     });
   } catch (error) {
     console.error('Tumblr API error:', error);
