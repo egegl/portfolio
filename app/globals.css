@@ -1,5 +1,3 @@
-@tailwind base;
-@tailwind components;
 @tailwind utilities;
 
 :root {
@@ -24,13 +22,4 @@ body {
   color: var(--foreground);
   font-family: Roboto, sans-serif;
   line-height: 1.5;
-}
-
-.section {
-  border: 1px solid var(--foreground);
-  padding: 0.5rem 2rem 1.5rem;
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-  box-sizing: border-box;
-  width: 100%;
 }

@@ -1,0 +1,78 @@
+.photo-container {
+  background-color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--foreground);
+}
+
+.photo-wrapper {
+  padding: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: height 0.3s ease-out;
+  min-height: 200px;
+  position: relative;
+}
+
+.photo-image {
+  max-width: 100%;
+  height: auto;
+  max-height: 80vh;
+  object-fit: contain;
+  transition: opacity 0.3s ease-out;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.photo-loading {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.photo-error {
+  text-align: center;
+  color: #ff4444;
+  padding: 20px;
+}
+
+.photo-link {
+  color: #666;
+  text-decoration: none;
+  font-size: 0.9em;
+}
+
+.photo-link:hover {
+  text-decoration: underline;
+}
+
+.refresh-button {
+  font-size: 1rem;
+  border: 1px solid black;
+  background: white;
+  color: black;
+  padding: 8px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-button:hover {
+  background: black;
+  color: white;
+}
+
+.refresh-button:active {
+  opacity: 0.8;
+} 

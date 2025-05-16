@@ -1,6 +1,9 @@
 "use client";
 import React, { useState, useRef, useEffect } from 'react';
 import { fetchEventSource } from '@microsoft/fetch-event-source';
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github-dark.css';
+import './ChatBox.css';
 
 // Message type for conversation state (displayed messages)
 type Message = { role: 'user' | 'assistant'; content: string };
@@ -22,6 +25,7 @@ export default function ChatBox() {
     }
   }, []);
   const [input, setInput] = useState('');
+  const MAX_LENGTH = 1000;
   // Loading state for thinking animation
   const [isLoading, setIsLoading] = useState(false);
   // Animated dots string
@@ -144,40 +148,92 @@ export default function ChatBox() {
     scrollToBottom();
   };
 
+  const parseMarkdown = (text: string) => {
+    // Replace **text** with <strong>text</strong>
+    let parsed = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Replace *text* with <em>text</em>
+    parsed = parsed.replace(/\*(.*?)\*/g, '<em>$1</em>');
+    
+    // Handle code blocks
+    parsed = parsed.replace(/```([\s\S]*?)```/g, (match, code) => {
+      // Remove any language specification at the start of the code
+      const cleanCode = code.trim().replace(/^\w+/, '').trim();
+      // Escape HTML characters
+      const escapedCode = cleanCode
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+      return `<pre><code>${escapedCode}</code></pre>`;
+    });
+    
+    // Replace `code` with <code>code</code>
+    parsed = parsed.replace(/`([^`]+)`/g, '<code>$1</code>');
+    return parsed;
+  };
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+  };
+
   return (
-    <div className="w-full max-w-2xl mx-auto p-4">
-      <div ref={containerRef} className="h-12c0 overflow-auto mb-4 p-2">
-        {messages.map((msg, idx) => {
-          const isLast = idx === messages.length - 1;
-          const showLoading = isLoading && msg.role === 'assistant' && isLast && msg.content === '';
-          return (
-            <div key={idx} className={msg.role === 'user' ? 'mb-2 text-right' : 'mb-2 text-left'}>
-              <div className="inline-block border border-gray-400 p-2">
+    <div className="chat-wrapper">
+      <div ref={containerRef} className="chat-container">
+        <div className="chat-message-container">
+          {messages.map((msg, idx) => {
+            const isLast = idx === messages.length - 1;
+            const showLoading = isLoading && msg.role === 'assistant' && isLast && msg.content === '';
+            return (
+              <div key={idx} className={`chat-message ${msg.role}`}>
                 {showLoading ? (
-                  <span className="inline-block min-w-[3ch] text-center">{dots}</span>
+                  <span className="chat-loading">{dots}</span>
                 ) : (
-                  <span className="whitespace-pre-wrap">{msg.content}</span>
+                  <>
+                    <span className="chat-text" dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.content) }} />
+                    {msg.role === 'assistant' && msg.content.length > 100 && (
+                      <div className="copy-container">
+                        <button 
+                          onClick={() => handleCopy(msg.content)} 
+                          className="copy-button"
+                          title="Copy message"
+                        >
+                          📋 Copy
+                        </button>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
-      <div className="flex items-center">
-        <input
-          type="text"
-          className="flex-grow border px-2 py-1 mr-2"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter' && !isLoading) handleSend(); }}
-          placeholder="Type your message..."
-          disabled={isLoading}
-        />
-        <div className="flex space-x-2">
-          <button onClick={handleSend} className="px-2.5 py-1 border" disabled={isLoading}>
+      <div className="chat-input-container">
+        <div className="chat-input-wrapper">
+          <input
+            type="text"
+            className="chat-input"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyDown={(e) => { if (e.key === 'Enter' && !isLoading) handleSend(); }}
+            placeholder="Type your message..."
+            disabled={isLoading}
+            maxLength={MAX_LENGTH}
+          />
+        </div>
+        <div className="chat-buttons">
+          <button 
+            onClick={handleSend} 
+            className="chat-button send"
+            disabled={isLoading}
+          >
             Send
           </button>
-          <button onClick={handleClear} className="px-2.5 py-1 border">
+          <button 
+            onClick={handleClear} 
+            className="chat-button clear"
+          >
             Clear
           </button>
         </div>
