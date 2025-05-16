@@ -69,7 +69,6 @@ body {
 .navbar {
   z-index: 1000;
   background: var(--background);
-  backdrop-filter: blur(10px);
   box-shadow: var(--shadow-effect);
   outline: none;
   border: none;

@@ -26,17 +26,6 @@ export default function Navbar() {
             // Set theme colors
             document.documentElement.style.setProperty('--background', stored === 'light' ? '#ffffff' : '#0a0a0a');
             document.documentElement.style.setProperty('--foreground', stored === 'light' ? '#171717' : '#ededed');
-            // Set shadows based on theme
-            document.documentElement.style.setProperty('--shadow-effect', stored === 'light' ? 
-                `0 2px 4px rgba(0, 0, 0, 0.1),
-                 0 4px 8px rgba(0, 0, 0, 0.1),
-                 0 8px 16px rgba(0, 0, 0, 0.1),
-                 0 16px 32px rgba(0, 0, 0, 0.1)` :
-                `0 1px 2px rgba(255, 255, 255, 0.05),
-                 0 2px 4px rgba(255, 255, 255, 0.05),
-                 0 4px 8px rgba(255, 255, 255, 0.05),
-                 0 8px 16px rgba(255, 255, 255, 0.05)`
-            );
         } else {
             const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
             const initial = systemDark ? 'dark' : 'light';
@@ -44,17 +33,6 @@ export default function Navbar() {
             // Set theme colors
             document.documentElement.style.setProperty('--background', initial === 'light' ? '#ffffff' : '#0a0a0a');
             document.documentElement.style.setProperty('--foreground', initial === 'light' ? '#171717' : '#ededed');
-            // Set shadows based on theme
-            document.documentElement.style.setProperty('--shadow-effect', initial === 'light' ? 
-                `0 2px 4px rgba(0, 0, 0, 0.1),
-                 0 4px 8px rgba(0, 0, 0, 0.1),
-                 0 8px 16px rgba(0, 0, 0, 0.1),
-                 0 16px 32px rgba(0, 0, 0, 0.1)` :
-                `0 1px 2px rgba(255, 255, 255, 0.05),
-                 0 2px 4px rgba(255, 255, 255, 0.05),
-                 0 4px 8px rgba(255, 255, 255, 0.05),
-                 0 8px 16px rgba(255, 255, 255, 0.05)`
-            );
         }
     }, []);
 
@@ -67,18 +45,6 @@ export default function Navbar() {
         // Reset to default theme colors
         document.documentElement.style.setProperty('--background', next === 'light' ? '#ffffff' : '#0a0a0a');
         document.documentElement.style.setProperty('--foreground', next === 'light' ? '#171717' : '#ededed');
-        
-        // Set shadows based on the new theme
-        document.documentElement.style.setProperty('--shadow-effect', next === 'light' ? 
-            `0 2px 4px rgba(0, 0, 0, 0.1),
-             0 4px 8px rgba(0, 0, 0, 0.1),
-             0 8px 16px rgba(0, 0, 0, 0.1),
-             0 16px 32px rgba(0, 0, 0, 0.1)` :
-            `0 1px 2px rgba(255, 255, 255, 0.05),
-             0 2px 4px rgba(255, 255, 255, 0.05),
-             0 4px 8px rgba(255, 255, 255, 0.05),
-             0 8px 16px rgba(255, 255, 255, 0.05)`
-        );
     };
 
     // Randomize foreground & background to two colorful hues
