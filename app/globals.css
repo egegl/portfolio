@@ -4,10 +4,10 @@
   --background: #ffffff;
   --foreground: #171717;
   --shadow-effect: 
-    0 2px 4px rgba(0, 0, 0, 0.05),
-    0 4px 8px rgba(0, 0, 0, 0.05),
-    0 8px 16px rgba(0, 0, 0, 0.05),
-    0 16px 32px rgba(0, 0, 0, 0.05);
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.1),
+    0 8px 16px rgba(0, 0, 0, 0.1),
+    0 16px 32px rgba(0, 0, 0, 0.1);
 }
 
 @theme inline {
@@ -19,6 +19,36 @@
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --shadow-effect: 
+      0 2px 4px rgba(255, 255, 255, 0.1),
+      0 4px 8px rgba(255, 255, 255, 0.1),
+      0 8px 16px rgba(255, 255, 255, 0.1),
+      0 16px 32px rgba(255, 255, 255, 0.1);
+  }
+
+  .section {
+    background: var(--background);
+    color: var(--foreground);
+  }
+
+  .navbar {
+    background: var(--background);
+  }
+
+  .chat-wrapper {
+    background: var(--background);
+  }
+
+  .section-title {
+    color: var(--foreground);
+  }
+
+  .section-text {
+    color: var(--foreground);
+  }
+
+  .section-link {
+    color: var(--foreground);
   }
 }
 
@@ -38,7 +68,7 @@ body {
 
 .navbar {
   z-index: 1000;
-  background: rgba(255, 255, 255, 0.8);
+  background: var(--background);
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow-effect);
   outline: none;
@@ -48,7 +78,8 @@ body {
 .section {
   padding: 2rem;
   margin: 1rem 0;
-  background: white;
+  background: var(--background);
+  color: var(--foreground);
   border-radius: 1rem;
   box-shadow: var(--shadow-effect);
   transition: all 0.3s ease;

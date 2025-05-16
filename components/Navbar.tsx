@@ -37,7 +37,22 @@ export default function Navbar() {
         const next = theme === 'light' ? 'dark' : 'light';
         setThemeState(next);
         localStorage.setItem('theme', next);
-        applyTheme(next);
+        
+        // Reset to default theme colors
+        document.documentElement.style.setProperty('--background', next === 'light' ? '#ffffff' : '#0a0a0a');
+        document.documentElement.style.setProperty('--foreground', next === 'light' ? '#171717' : '#ededed');
+        
+        // Set shadows based on the new theme
+        document.documentElement.style.setProperty('--shadow-effect', next === 'light' ? 
+            `0 2px 4px rgba(0, 0, 0, 0.1),
+             0 4px 8px rgba(0, 0, 0, 0.1),
+             0 8px 16px rgba(0, 0, 0, 0.1),
+             0 16px 32px rgba(0, 0, 0, 0.1)` :
+            `0 2px 4px rgba(255, 255, 255, 0.1),
+             0 4px 8px rgba(255, 255, 255, 0.1),
+             0 8px 16px rgba(255, 255, 255, 0.1),
+             0 16px 32px rgba(255, 255, 255, 0.1)`
+        );
     };
 
     // Randomize foreground & background to two colorful hues
@@ -57,12 +72,18 @@ export default function Navbar() {
         
         // Generate foreground color with opposite lightness
         const fgColor = randColor(20, 30); // Darker foreground for light background
-        // or
-        // const fgColor = randColor(80, 90); // Lighter foreground for dark background
         
         // Set the colors
         root.style.setProperty('--background', bgColor);
         root.style.setProperty('--foreground', fgColor);
+        
+        // Set dark shadows for randomized colors
+        root.style.setProperty('--shadow-effect', `
+            0 2px 4px rgba(0, 0, 0, 0.1),
+            0 4px 8px rgba(0, 0, 0, 0.1),
+            0 8px 16px rgba(0, 0, 0, 0.1),
+            0 16px 32px rgba(0, 0, 0, 0.1)
+        `);
     };
 
     const toggleMenu = () => setIsOpen(!isOpen);

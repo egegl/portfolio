@@ -104,7 +104,7 @@ export default function PhotoOfTheDay() {
 
   if (error) {
     return (
-      <div className="photo-container">
+      <div>
         <div className="photo-error">
           {error}
           <br />
@@ -118,7 +118,7 @@ export default function PhotoOfTheDay() {
   }
 
   return (
-    <div className="photo-container" ref={containerRef}>
+    <div ref={containerRef}>
       <div className="photo-content">
         <div 
           className="photo-wrapper" 
@@ -143,19 +143,21 @@ export default function PhotoOfTheDay() {
             <div className="photo-error">No photo available</div>
           )}
         </div>
+        <div className="photo-actions">
+          {photoUrl && (
+            <button 
+              onClick={fetchRandomPhoto} 
+              className="refresh-button"
+              aria-label="Load another random photo"
+            >
+              ↻ Load Another Photo
+            </button>
+          )}
+          <a href="https://www.tumblr.com/blog/gurselgallery" className="photo-link" target="_blank" rel="noopener noreferrer">
+            <u>More photos on my photoblog!</u>
+          </a>
+        </div>
       </div>
-      {photoUrl && (
-        <button 
-          onClick={fetchRandomPhoto} 
-          className="refresh-button"
-          aria-label="Load another random photo"
-        >
-          ↻ Load Another Photo
-        </button>
-      )}
-      <a href="https://www.tumblr.com/blog/gurselgallery" className="photo-link" target="_blank" rel="noopener noreferrer">
-        <u>More photos on my photoblog!</u>
-      </a>
     </div>
   );
 } 

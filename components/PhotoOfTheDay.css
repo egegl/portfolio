@@ -1,5 +1,5 @@
 .photo-container {
-  background-color: white;
+  background: var(--background);
   padding: 20px;
   display: flex;
   flex-direction: column;
@@ -17,6 +17,13 @@
   width: 100%;
 }
 
+.photo-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
 .photo-wrapper {
   padding: 20px;
   width: 100%;
@@ -26,7 +33,6 @@
   transition: height 0.3s ease-out;
   min-height: 200px;
   position: relative;
-  border-radius: 8px;
 }
 
 .photo-container-inner {
@@ -45,6 +51,18 @@
   object-fit: contain;
   transition: all 0.3s ease;
   box-shadow: var(--shadow-effect);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .photo-loading {
