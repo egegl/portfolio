@@ -180,35 +180,33 @@ export default function ChatBox() {
 
   return (
     <div className="chat-wrapper">
-      <div ref={containerRef} className="chat-container">
-        <div className="chat-message-container">
-          {messages.map((msg, idx) => {
-            const isLast = idx === messages.length - 1;
-            const showLoading = isLoading && msg.role === 'assistant' && isLast && msg.content === '';
-            return (
-              <div key={idx} className={`chat-message ${msg.role}`}>
-                {showLoading ? (
-                  <span className="chat-loading">{dots}</span>
-                ) : (
-                  <>
-                    <span className="chat-text" dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.content) }} />
-                    {msg.role === 'assistant' && msg.content.length > 100 && (
-                      <div className="copy-container">
-                        <button 
-                          onClick={() => handleCopy(msg.content)} 
-                          className="copy-button"
-                          title="Copy message"
-                        >
-                          📋 Copy
-                        </button>
-                      </div>
-                    )}
-                  </>
-                )}
-              </div>
-            );
-          })}
-        </div>
+      <div className="chat-message-container" ref={containerRef}>
+        {messages.map((msg, idx) => {
+          const isLast = idx === messages.length - 1;
+          const showLoading = isLoading && msg.role === 'assistant' && isLast && msg.content === '';
+          return (
+            <div key={idx} className={`chat-message ${msg.role}`}>
+              {showLoading ? (
+                <span className="chat-loading">{dots}</span>
+              ) : (
+                <>
+                  <span className="chat-text" dangerouslySetInnerHTML={{ __html: parseMarkdown(msg.content) }} />
+                  {msg.role === 'assistant' && msg.content.length > 200 && (
+                    <div className="copy-container">
+                      <button 
+                        onClick={() => handleCopy(msg.content)} 
+                        className="copy-button"
+                        title="Copy message"
+                      >
+                        📋 Copy
+                      </button>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          );
+        })}
       </div>
       <div className="chat-input-container">
         <div className="chat-input-wrapper">
